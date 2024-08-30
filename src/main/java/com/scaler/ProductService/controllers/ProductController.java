@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//adding comment for git testing
 @RestController
 @RequestMapping("/products")
 public class ProductController {
