@@ -1,12 +1,13 @@
 package com.scaler.ProductService.services;
 
+import com.scaler.ProductService.exceptions.InvalidProductIdException;
 import com.scaler.ProductService.models.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product getProductById(Long id);
+    Product getProductById(Long id) throws InvalidProductIdException;
 
     List<Product> getAllProducts();
 
@@ -14,7 +15,7 @@ public interface ProductService {
 
     Product updateProduct(Long id);
 
-    Product replaceProduct(Long id);
+    Product replaceProduct(Long id, Product product);
 
     void deleteProduct(Long id);
 }

@@ -1,9 +1,17 @@
 package com.scaler.ProductService.controllers;
 
+import ch.qos.logback.classic.spi.IThrowableProxy;
+import com.scaler.ProductService.exceptions.InvalidProductIdException;
+import com.scaler.ProductService.exceptions.ProductControllerSpecificExceptions;
 import com.scaler.ProductService.models.Product;
 import com.scaler.ProductService.services.ProductService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +37,29 @@ public class ProductController {
 
     //localhost:8080/products/10
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id){
-        return new Product();
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws InvalidProductIdException {
+//         throw new RuntimeException("Here the manual exce  ption created");
+        Product product =  productService.getProductById(id);
+//        return new ResponseEntity<>(product, HttpStatusCode.valueOf(404));
+//        return new ResponseEntity<>(product, HttpStatus.ACCEPTED);
+
+//        Product product = null;
+//        try{
+//            product =  productService.getProductById(id);
+//        }catch(RuntimeException e){
+//            System.out.println("Something went wrong");
+//            return new ResponseEntity<>(product, HttpStatus.NOT_FOUND);
+//        }
+        return new ResponseEntity<>(product, HttpStatus.OK);
+
+//        int a = 1/0;
+//        return null;
     }
 
     //localhost:8080/products
     @GetMapping()
     public List<Product> getAllProducts(){
-        return new ArrayList<>();
+        return productService.getAllProducts();
     }
 
     //create a Product
@@ -54,12 +77,18 @@ public class ProductController {
     //Replace Product
     @PutMapping("/{id}")
     public Product replaceProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        return new Product();
+        return productService.replaceProduct(id,product);
     }
 
     //Delete Product
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") Long id, @RequestBody Product product){
         return;
+    }
+
+    ////Below one exception is an example of controller specific exceptions.
+    @ExceptionHandler(ProductControllerSpecificExceptions.class)
+    public ResponseEntity<Void> handleProductControllerSpecificExceptions(){
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
