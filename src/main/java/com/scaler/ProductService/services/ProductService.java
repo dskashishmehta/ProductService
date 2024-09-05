@@ -11,9 +11,9 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-    Product createProduct();
+    Product createProduct(Product product);
 
-    Product updateProduct(Long id);
+    Product updateProduct(Long id, Product product) throws Exception;
 
     Product replaceProduct(Long id, Product product);
 

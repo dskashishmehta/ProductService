@@ -7,6 +7,7 @@ import com.scaler.ProductService.models.Product;
 import com.scaler.ProductService.services.ProductService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class ProductController {
 //
 //    //Before injecting the dependency we need to create a Service object using the @Service in service.
     @Autowired
-    ProductController(ProductService productService){
+    ProductController(@Qualifier("selfProductService") ProductService productService){
         this.productService=productService;
     }
 
@@ -65,13 +66,13 @@ public class ProductController {
     //create a Product
     @PostMapping
     public Product createProduct(@RequestBody Product product){
-        return new Product();
+        return productService.createProduct(product);
     }
 
     //Partial Update
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        return new Product();
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) throws Exception {
+        return productService.updateProduct(id,product);
     }
 
     //Replace Product

@@ -4,6 +4,7 @@ import com.scaler.ProductService.dtos.FakeStoreProductDto;
 import com.scaler.ProductService.exceptions.InvalidProductIdException;
 import com.scaler.ProductService.models.Category;
 import com.scaler.ProductService.models.Product;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeStoreProductService")     //optional bean naming
+//@Primary
 //@AllArgsConstructor
 public class FakeStoreProductServiceImpl implements ProductService {
 
@@ -68,12 +70,12 @@ public class FakeStoreProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct() {
+    public Product createProduct(Product product) {
         return null;
     }
 
     @Override
-    public Product updateProduct(Long id) {
+    public Product updateProduct(Long id, Product product) {
         return null;
     }
 
