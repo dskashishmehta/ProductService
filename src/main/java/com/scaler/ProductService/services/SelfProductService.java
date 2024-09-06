@@ -46,11 +46,11 @@ public class SelfProductService implements ProductService {
     public Product createProduct(Product product) {
         Category category = product.getCategory();
 
-        if(category.getId() == null){
-            //first insert the category in the DB.
-            Category savedCategory = categoryRepository.save(category);
-            product.setCategory(savedCategory);
-        }
+//        if(category.getId() == null){
+//            //first insert the category in the DB.
+//            Category savedCategory = categoryRepository.save(category);
+//            product.setCategory(savedCategory);
+//        }
 
         return productRepository.save(product);
     }
@@ -66,29 +66,20 @@ public class SelfProductService implements ProductService {
 
         Product currentProduct = optionalProduct.get();   //current existing data in database.
 //******************************************************************************************************
-        if(product.getTitle() != null){
-            currentProduct.setTitle(product.getTitle());    //set the new data 1-by-1 to the current data.
-        }
-        if(product.getDescription() != null){
-            currentProduct.setDescription(product.getDescription());  //@Question: If we have more than 50 columns to set values then how to do it?
-        }
+//        if(product.getTitle() != null){
+//            currentProduct.setTitle(product.getTitle());    //set the new data 1-by-1 to the current data.
+//        }
+//        if(product.getDescription() != null){
+//            currentProduct.setDescription(product.getDescription());  //@Question: If we have more than 50 columns to set values then how to do it?
+//        }
 
 
 //*******************************************************************************************************
-//        //Not working this logic now need to check it.
+//        //Not working this logic now need to check it.(Now it is working if we add cascade to product).
 //        //To deal with the question above we can use dependency Apache commons BeanUtils.
 //        //This would dynamically copy non-null properties, from the incoming object to the existing one.
-//        // Make sure Category is managed/persisted before setting it
-//        if (product.getCategory() != null) {
-//            Category category = product.getCategory();
-//            if (category.getId() == null) {
-//                // Save the Category first if it's new (not persisted yet)
-//                categoryRepository.save(category);
-//            }
-//            currentProduct.setCategory(category);
-//        }
 //
-//        BeanUtils.copyProperties(currentProduct, product);
+        BeanUtils.copyProperties(currentProduct, product); // We can also use MapStruct()
 //********************************************************************************************************
         return productRepository.save(currentProduct);      //Save it to the DB.
     }
